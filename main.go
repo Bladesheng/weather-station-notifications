@@ -38,9 +38,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	message := &Notification{Title: "test title", Body: "hii"}
+	notification, err := GetNotification()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	err = SendNotifications(message)
+	err = SendNotifications(notification)
 	if err != nil {
 		log.Fatal(err)
 	}
