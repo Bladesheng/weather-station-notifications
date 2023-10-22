@@ -2,85 +2,16 @@ package main
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"os"
 	"sync"
 
-	"fmt"
-
-	"database/sql"
-
-	"github.com/joho/godotenv"
-
-	_ "github.com/lib/pq"
-
-	webpush "github.com/SherClockHolmes/webpush-go"
+	"github.com/SherClockHolmes/webpush-go"
 )
-
-type Subscription struct {
-	id               int
-	createdAt        string
-	pushSubscription json.RawMessage
-}
-
-type Notification struct {
-	Title string `json:"title"`
-	Body  string `json:"body"`
-}
-
-var DB *sql.DB
-
-func main() {
-	err := loadEnv()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = connectDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	message := &Notification{Title: "test title", Body: "hii"}
-
-	err = sendNotifications(message)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-}
-
-// Loads environment variables from .env file if not in production
-func loadEnv() error {
-	env := os.Getenv("NODE_ENV")
-	if env == "production" {
-		return nil
-	}
-
-	err := godotenv.Load()
-	if err != nil {
-		return fmt.Errorf("could not load .env file: %w", err)
-	}
-
-	return nil
-}
-
-func connectDB() error {
-	connStr := os.Getenv("DATABASE_URL")
-
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		return fmt.Errorf("could not connect to database: %w", err)
-	}
-
-	DB = db
-
-	return nil
-}
 
 // https://github.com/nakamauwu/nakama/blob/main/web_push_subscription.go
 // Sends notification to all subscriptions in database
-func sendNotifications(notification *Notification) error {
+func SendNotifications(notification *Notification) error {
 	subs, err := getSubscriptions()
 	if err != nil {
 		return err
