@@ -1,4 +1,4 @@
-module weather-station-notifications
+module forecast-notification
 
 go 1.21.3
 
