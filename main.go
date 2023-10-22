@@ -23,6 +23,7 @@ type Subscription struct {
 type Notification struct {
 	Title string `json:"title"`
 	Body  string `json:"body"`
+	Icon  string `json:"icon"`
 }
 
 var DB *sql.DB
