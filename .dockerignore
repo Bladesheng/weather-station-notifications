@@ -1,0 +1,11 @@
+.git
+.github
+.gitignore
+.env
+.example.env
+
+forecast-notification
+docker-compose.yml
+Dockerfile
+LICENSE
+README.md
