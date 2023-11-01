@@ -1,0 +1,53 @@
+# This workflow builds the docker image, tags it and pushes it to github container registry
+
+name: Build and publish Docker image
+
+on:
+  # when pushing to main
+  push:
+    branches: [main]
+
+  # once a week
+  schedule:
+    - cron: "0 0 * * 1"
+
+  # manual trigger
+  workflow_dispatch:
+
+# Allow one concurrent run
+concurrency:
+  group: "image-build-publish"
+  cancel-in-progress: true
+
+jobs:
+  job-1:
+    name: Build and publish image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Docker tags
+        id: docker_tags
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/bladesheng/weather-notifications
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push the image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ steps.docker_tags.outputs.tags }}
