@@ -24,8 +24,8 @@ services:
         env_file:
             - .env
 
-	db:
-		image: postgres:latest
+    db:
+        image: postgres:latest
 ```
 
 -   Run Docker
