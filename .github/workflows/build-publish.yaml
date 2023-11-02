@@ -19,6 +19,9 @@ concurrency:
   group: "image-build-publish"
   cancel-in-progress: true
 
+permissions:
+  packages: write
+
 jobs:
   job-1:
     name: Build and publish image
@@ -33,7 +36,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/bladesheng/weather-notifications
+            ghcr.io/weather-blade/weather-notifications
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
 

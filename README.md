@@ -1,4 +1,4 @@
-# weather-station-notifications
+# weather-notifications
 
 ## About this repository
 
@@ -13,7 +13,7 @@ Docker container with cronjob, that runs go script once a day. The script fetche
 ```yaml
 services:
     notifications:
-        image: ghcr.io/bladesheng/weather-notifications
+        image: ghcr.io/weather-blade/weather-notifications:latest
         restart: unless-stopped
         depends_on:
             - db
