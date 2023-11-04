@@ -18,11 +18,9 @@ services:
         depends_on:
             - db
         environment:
-            - DATABASE_URL=${DATABASE_URL}
-            - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
-            - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
-        env_file:
-            - .env
+            DATABASE_URL: ${DATABASE_URL}
+            VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
+            VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
 
     db:
         image: postgres:latest
