@@ -12,6 +12,8 @@ import (
 // https://github.com/nakamauwu/nakama/blob/main/web_push_subscription.go
 // Sends notification to all subscriptions in database
 func SendNotifications(notification *Notification) error {
+	fmt.Println("sending notification:\n", notification)
+
 	subs, err := getSubscriptions()
 	if err != nil {
 		return err
@@ -28,6 +30,7 @@ func SendNotifications(notification *Notification) error {
 
 	var wg sync.WaitGroup
 
+	fmt.Println("sending", len(subs), "notifications")
 	for _, sub := range subs {
 		wg.Add(1)
 
@@ -39,11 +42,15 @@ func SendNotifications(notification *Notification) error {
 			err := sendWebPushNotification(pushSubscription, message)
 			if err != nil {
 				fmt.Print(err)
+				return
 			}
+
+			fmt.Println("notification", pushSubscription.id, "sent")
 		}()
 	}
 
 	wg.Wait()
+	fmt.Println("finished sending notifications")
 
 	return nil
 }
