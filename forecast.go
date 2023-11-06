@@ -9,7 +9,7 @@ import (
 
 // Fetches notification content from server
 func GetNotification() (*Notification, error) {
-	url := "https://weather-station-backend.fly.dev"
+	url := "https://weatherapi.bladesheng.com"
 	// url := "http://localhost:8080"
 
 	resp, err := http.Get(url + "/api/forecast/notification")
